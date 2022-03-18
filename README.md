@@ -1,38 +1,57 @@
-# WireGuard dockerized
-WireGuard in Docker
+# WireGuard + Shadowsocks dockerized
+WireGuard + Shadowsocks in Docker
 
 ## Prequsites
 You need any Debian-based VPS, wget, make, Docker
 
-## Typical usage:
+## Typical usage
 ``` bash
 apt-get install -y wget make
 wget -O makefile https://raw.githubusercontent.com/chechulnikov/wg/main/makefile
-wget -O dockerfile https://raw.githubusercontent.com/chechulnikov/wg/main/dockerfile
 
-# install dependencies, generate WireGuard ./wghub.conf config for server
+# install dependencies
+make install
+
+# build Docker image, generate WireGuard ./wghub.conf config for server
 make init
 
 # setup firewall
 make firewall
 
-# generate new client's configs for name 'macbook', 'iphone', etc
+# generate new client's configs for names 'macbook', 'iphone', 'any-client-name', etc
 make client CLIENT=macbook
 make client CLIENT=iphone
+make client CLIENT=any-client-name
 
-# ... copy clients configs from /wg directory and put it into your client app
-cat /wg/wgclient_macbook.conf
-cat /wg/wgclient_iphone.conf
+# ... copy WireGuard clients configs from /wg directory and put it into your WireGuard client app
+cat /wgss/wgclient_macbook.conf
+cat /wgss/wgclient_iphone.conf
+cat /wgss/wgclient_any-client-name.conf
 
-# run WireGuard server
+# .. copy Shadowsocks client config and put it into your Shadowsocks client app
+cat /wgss/ss-client.json
+
+# run WireGuard + Shadowsocks server in Docker container
 make run
 
 # check status
 make status
 ```
 
+## Stop server
+To stop server just use
+```bash
+make stop
+```
+
+## Clean all
+To clean up your environment on server just use
+```bash
+make clean
+```
+
 ## Help
 For checking all available commands just type
-```
+```bash
 make
 ```
