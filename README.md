@@ -30,10 +30,10 @@ flowchart TB
 
         APP1 <== traffic ==> WGC
         APP2 <== traffic ==> WGC
-        APP3 <== traffic ==> WGC be
+        APP3 <== traffic ==> WGC
         APP4 <== traffic ==> WGC
 
-        WGC <-- "service handshakes over TCP" --> SSC
+        WGC <-- "service handshakes \n over TCP" --> SSC
     end
 
     SSC <-- obfuscated TCP --> SSS
@@ -44,7 +44,7 @@ flowchart TB
             WGS[WireGuard server]
             SSS[Shadowsocks server]
 
-            SSS <-- "service handshakes over TCP" --> WGS
+            SSS <-- "service handshakes \n over TCP" --> WGS
        end
     end
 
