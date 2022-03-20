@@ -21,7 +21,7 @@ RUN apt-get install -y wireguard-tools mawk grep iproute2 qrencode wget iptables
 RUN wget -O /easy-wg-quick https://raw.githubusercontent.com/burghardt/easy-wg-quick/master/easy-wg-quick 
 RUN chmod +x /easy-wg-quick
 
-# indstall Shadowsocks
+# install Shadowsocks
 RUN apt-get install -y shadowsocks-libev haveged
 
 WORKDIR /workdir
@@ -131,7 +131,7 @@ firewall:	# setup firewal: allow only WireGuard, Shadowsocks and SSH ports and d
 restart:	# restart maschine
 	@ halt —-reboot
 
-_run:		# run Docker $(CONTAINER) from $(IMAGE) mwith $(COMMAND)
+_run:		# run Docker $(CONTAINER) from $(IMAGE) with $(COMMAND)
 	@ docker run -d -it \
 		--restart unless-stopped \
 		--privileged \
