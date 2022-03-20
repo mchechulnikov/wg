@@ -1,8 +1,16 @@
 # WireGuard + Shadowsocks dockerized
 WireGuard + Shadowsocks in Docker
 
+## How it works
+* WireGuard secure traffic wrapping it up to encrypted tunnel between client and server
+* WireGuard uses TCP handshakes to establish connection, then data flows over UDP
+* Unfortunately, they are recognisable by specific signature of first bytes of TCP/IP package
+* Shadowsocks obfuscate TCP channel to make secure fact that client trying to connect to  server via WireGuard
+* You just need to wrap up you TCP to Shadowsocks connection
+
 ## Prequsites
-You need any Debian-based VPS, wget, make, Docker
+* Server: Debian-based VPS, wget, make, Docker
+* Client: WireGuard app, any Shadowsocks client app
 
 ## Typical usage
 ``` bash
