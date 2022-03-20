@@ -10,6 +10,38 @@ WireGuard + Shadowsocks in Docker
 * On client: put WG-encrypted traffic to SS-tunnel using SS-client's TCP-port
 * On server: extract traffic from SS-tunnel and put it to WG-server's TCP-port
 
+```mermaid
+flowchart TB
+    U([User])
+    
+    U -. uses .-> APP
+
+    subgraph client device
+        APP(User's apps)
+
+        WGC[WireGuard client]
+        SSC[Shadowsocks client]
+
+        APP == traffic ==> WGC
+        WGC -- TCP handshakes --> SSC
+    end
+
+    SSC -- obfuscated TCP --> SSS
+    WGC == encrypted UDP tunnel ==> WGS
+
+    subgraph server
+        WGS[WireGuard server]
+        SSS[Shadowsocks server]
+
+        SSS -- TCP handshakes--> WGS
+       
+    end
+
+    WGS == traffic ==> I
+
+    I((Internet))
+```
+
 ## Prequsites
 * Server: Debian-based VPS, wget, make, Docker
 * Client: WireGuard app, any Shadowsocks client app
