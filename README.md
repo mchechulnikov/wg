@@ -6,7 +6,7 @@ WireGuard + Shadowsocks in Docker
 * WireGuard uses TCP handshakes to establish connection, then data flows over UDP
 * Unfortunately, they are recognisable by specific signature of first bytes of TCP/IP package
 * Shadowsocks obfuscate TCP channel to make secure fact that client trying to connect to  server via WireGuard
-* You just need to wrap up you TCP to Shadowsocks connection
+* You just need to wrap up you TCP to Shadowsocks connection. You don't need to do something with main UDP traffic because it's not recognisable
 * On client: put WG-encrypted traffic to SS-tunnel using SS-client's TCP-port
 * On server: extract traffic from SS-tunnel and put it to WG-server's TCP-port
 
