@@ -5,10 +5,10 @@ WireGuard + Shadowsocks in Docker
 * WireGuard secure traffic wrapping it up to encrypted tunnel between client and server
 * WireGuard uses TCP handshakes to establish connection, then data flows over UDP
 * Unfortunately, WireGuard's TCP handshake is recognisable by specific signature of first bytes of package
-* Shadowsocks obfuscate TCP channel to mask fact that client trying to connect to  server via WireGuard
-* You just need to wrap up you TCP to Shadowsocks connection. You don't need to do something with main UDP traffic because it's not recognisable
-* On client: put WG-encrypted traffic to SS-tunnel using SS-client's TCP-port
-* On server: extract traffic from SS-tunnel and put it to WG-server's TCP-port
+* Shadowsocks obfuscate channel to mask fact that client trying to connect to  server via WireGuard
+* You just need to wrap up you to Shadowsocks connection
+* On client: put WG-encrypted traffic to SS-tunnel using SS-client's port
+* On server: extract traffic from SS-tunnel and put it to WG-server's port
 
 ```mermaid
 flowchart TB
@@ -33,17 +33,19 @@ flowchart TB
         APP3 <== traffic ==> WGC
         APP4 <== traffic ==> WGC
 
+        WGC <== "traffic wrapped up into \n encrypted UDP tunnel" ==> SSC
         WGC <-- "service handshakes \n over TCP" --> SSC
     end
 
-    SSC <-- obfuscated TCP --> SSS
-    WGC <== "traffic wrapped up into \n encrypted UDP tunnel" ==> WGS
+    SSC <== "SS-obfuscated UDP tunnel \n over WG-encrypted tunnel" ==> SSS
+    SSC <-- SS-obfuscated TCP tunnel --> SSS
 
     subgraph server
         subgraph Docker container
             WGS[WireGuard server]
             SSS[Shadowsocks server]
 
+            SSS <== "traffic wrapped up into \n encrypted UDP tunnel" ==> WGS
             SSS <-- "service handshakes \n over TCP" --> WGS
        end
     end
