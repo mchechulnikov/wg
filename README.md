@@ -14,30 +14,37 @@ WireGuard + Shadowsocks in Docker
 flowchart TB
     U([User])
     
-    U -. uses .-> APP
+    U -. uses .- APP1
+    U -. uses .- APP2
+    U -. uses .- APP3
 
     subgraph client device
-        APP(User's apps)
+        APP1(user's app)
+        APP2(user's app)
+        APP3(user's app)
 
         WGC[WireGuard client]
         SSC[Shadowsocks client]
 
-        APP == traffic ==> WGC
-        WGC -- TCP handshakes --> SSC
+        APP1 <== traffic ==> WGC
+        APP2 <== traffic ==> WGC
+        APP3 <== traffic ==> WGC
+
+        WGC <-- TCP handshakes --> SSC
     end
 
-    SSC -- obfuscated TCP --> SSS
-    WGC == encrypted UDP tunnel ==> WGS
+    SSC <-- obfuscated TCP --> SSS
+    WGC <== encrypted UDP tunnel ==> WGS
 
     subgraph server
         WGS[WireGuard server]
         SSS[Shadowsocks server]
 
-        SSS -- TCP handshakes--> WGS
+        SSS <-- TCP handshakes--> WGS
        
     end
 
-    WGS == traffic ==> I
+    WGS <== traffic ==> I
 
     I((Internet))
 ```
