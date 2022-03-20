@@ -17,31 +17,35 @@ flowchart TB
     U -. uses .- APP1
     U -. uses .- APP2
     U -. uses .- APP3
+    U -. uses .- APP4
 
     subgraph client device
-        APP1(user's app)
-        APP2(user's app)
-        APP3(user's app)
+        APP1(app)
+        APP2(app)
+        APP3(app)
+        APP4(app)
 
         WGC[WireGuard client]
         SSC[Shadowsocks client]
 
         APP1 <== traffic ==> WGC
         APP2 <== traffic ==> WGC
-        APP3 <== traffic ==> WGC
+        APP3 <== traffic ==> WGC be
+        APP4 <== traffic ==> WGC
 
-        WGC <-- TCP handshakes --> SSC
+        WGC <-- "service handshakes over TCP" --> SSC
     end
 
     SSC <-- obfuscated TCP --> SSS
-    WGC <== encrypted UDP tunnel ==> WGS
+    WGC <== "traffic wrapped up into \n encrypted UDP tunnel" ==> WGS
 
     subgraph server
-        WGS[WireGuard server]
-        SSS[Shadowsocks server]
+        subgraph Docker container
+            WGS[WireGuard server]
+            SSS[Shadowsocks server]
 
-        SSS <-- TCP handshakes--> WGS
-       
+            SSS <-- "service handshakes over TCP" --> WGS
+       end
     end
 
     WGS <== traffic ==> I
