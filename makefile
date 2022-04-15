@@ -87,7 +87,8 @@ init:		# build Docker image, generate WireGuard and Shadowsock configs for serve
 	@ echo "$${SS_SERVER_CONFIG}" > $(DIR)/ss-server.json
 	@ echo "$${SS_CLIENT_CONFIG}" > $(DIR)/ss-client.json
 
-	@ make _run COMMAND='/easy-wg-quick'
+	@ make _run
+	@ make _exec COMMAND='/easy-wg-quick'
 	@ make stop
 	
 build:		# build Docker image
@@ -98,11 +99,13 @@ build:		# build Docker image
 		.
 
 run:		# run WireGuard + Shadowsocks server from ./wghub.conf
-	@ make _run COMMAND='wg-quick up ./wghub.conf'
-	@ make _run COMMAND='ss-server -c ./ss-server.json &'
+	@ make _run 
+	@ make _exec COMMAND='wg-quick up ./wghub.conf'
+	@ make _exec COMMAND='ss-server -c ./ss-server.json &'
 
 client:		# generate new client config for name $(CLIENT)
-	@ make _run COMMAND='/easy-wg-quick $(CLIENT)'
+	@ make _run
+	@ make _exec COMMAND='/easy-wg-quick $(CLIENT)'
 	@ make stop
 
 	# fix up WireGuard's client endpoint in client's config
@@ -146,4 +149,6 @@ _run:		# run Docker $(CONTAINER) from $(IMAGE) with $(COMMAND)
 		-p $(SS_PORT):$(SS_PORT)/tcp \
 		-p $(SS_PORT):$(SS_PORT)/udp \
 		$(IMAGE)
+
+_exec:		# exec $(COMMAND) on Docker $(CONTAINER)
 	@ docker exec -it $(CONTAINER) $(COMMAND)
