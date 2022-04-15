@@ -26,7 +26,7 @@ RUN apt-get install -y shadowsocks-libev haveged
 
 WORKDIR /workdir
 endef
-export SS_SERVER_CONFIG
+export DOCKERFILE
 
 define SS_SERVER_CONFIG
 {
@@ -66,9 +66,12 @@ install:		# install dependencies
 	@ apt-get update
 	@ apt-get install -y docker.io htop needrestart speedtest-cli wget sed grep iptables
 
+# test:
+# 	@ echo "$${TEST}" > ./test.txt
+
 init:		# build Docker image, generate WireGuard and Shadowsock configs for server
 	# build Docker image
-	@ echo $${SS_SERVER_CONFIG} > ./dockerfile
+	@ echo "$${DOCKERFILE}" > ./dockerfile
 	@ make build
 	@ rm -f ./dockerfile
 
@@ -81,8 +84,8 @@ init:		# build Docker image, generate WireGuard and Shadowsock configs for serve
 	@ echo $(WG_PORT) > $(DIR)/portno.txt
 
 	# setup Shadowsocks config
-	@ echo $${SS_SERVER_CONFIG} > $(DIR)/ss-server.json
-	@ echo $${SS_CLIENT_CONFIG} > $(DIR)/ss-client.json
+	@ echo "$${SS_SERVER_CONFIG}" > $(DIR)/ss-server.json
+	@ echo "$${SS_CLIENT_CONFIG}" > $(DIR)/ss-client.json
 
 	@ make _run COMMAND='/easy-wg-quick'
 	@ make stop
