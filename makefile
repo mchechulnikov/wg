@@ -101,7 +101,7 @@ build:		# build Docker image
 run:		# run WireGuard + Shadowsocks server from ./wghub.conf
 	@ make _run 
 	@ make _exec COMMAND='wg-quick up ./wghub.conf'
-	@ make _exec COMMAND='ss-server -c ./ss-server.json &'
+	@ make _exec COMMAND='ss-server -c ./ss-server.json'
 
 client:		# generate new client config for name $(CLIENT)
 	@ make _run
