@@ -109,8 +109,8 @@ client:		# generate new client config for name $(CLIENT)
 	@ make stop
 
 	# fix up WireGuard's client endpoint in client's config
-	@ sed -i '' \
-		's/Endpoint = $(SERVER_IP):$(WG_PORT)/Endpoint = 127.0.0.1:$(SS_CLIENT_PORT)/' \
+	@ sed -i \
+		's/Endpoint = $(SERVER_IP):$(WG_PORT)/Endpoint = 127.0.0.1:$(SS_CLIENT_PORT)/g' \
 		$(DIR)/wgclient_$(CLIENT).conf
 
 status:		# displays WireGuard status
