@@ -66,9 +66,6 @@ install:		# install dependencies
 	@ apt-get update
 	@ apt-get install -y docker.io htop needrestart speedtest-cli wget sed grep iptables
 
-# test:
-# 	@ echo "$${TEST}" > ./test.txt
-
 init:		# build Docker image, generate WireGuard and Shadowsock configs for server
 	# build Docker image
 	@ echo "$${DOCKERFILE}" > ./dockerfile
